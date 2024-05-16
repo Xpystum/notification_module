@@ -2,6 +2,8 @@
 
 namespace App\Modules\Notification\View\Http\Controllers;
 
+use App\Modules\Notification\DTO\AeroDTO;
+use App\Modules\Notification\DTO\SmtpDto;
 use App\Modules\Notification\Enums\MethodNotificationEnum;
 use App\Modules\Notification\Services\NotificationService;
 use App\Modules\Notification\Models\NotificationMethod;
@@ -13,23 +15,24 @@ class NotificationController
 {
     public function __invoke(NotificationService $service)
     {
+
         /**
         * @var NotificationMethod
         */
-        $modelMethod = $service->getNotificationMethod()
-                    ->activeCache()
-                    ->methodEnum(MethodNotificationEnum::phone)
-                    ->first();
+        // $modelMethod = $service->getNotificationMethod()
+        //             ->activeCache()
+        //             ->methodEnum(MethodNotificationEnum::phone)
+        //             ->first();
 
-        $model = $service->createNotification()
-                ->method($modelMethod)
-                ->run();
+        // $model = $service->createNotification()
+        //         ->method($modelMethod)
+        //         ->run();
 
-                Log::info('MODEL ' . $model);
-
-        $service->updateNotification()->updateCode()->run($model);
-
-        Log::info('MODEL2 ' . $model);
+        $service->sendNotification()
+            ->typeDriver('aero')
+            ->dto(new AeroDTO)
+            ->run();
+        // $service->updateNotification()->updateCode()->run($model);
 
 
     }

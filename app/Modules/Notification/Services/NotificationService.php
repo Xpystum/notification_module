@@ -2,8 +2,11 @@
 
 namespace App\Modules\Notification\Services;
 
+use App\Modules\Notification\Action\CompleteNotificationAction;
 use App\Modules\Notification\Action\CreateNotificationAction;
+use App\Modules\Notification\Action\ExpiredNotificationAction;
 use App\Modules\Notification\Action\GetMethodAction;
+use App\Modules\Notification\Action\SendNotificationAction;
 use App\Modules\Notification\Action\UpdateNotificationAction;
 use App\Modules\Notification\Drivers\Factory\NotificationDriverFactory;
 use App\Modules\Notification\Enums\NotificationDriverEnum;
@@ -33,11 +36,20 @@ class NotificationService
         return app(UpdateNotificationAction::class);
     }
 
-    // public function completePayment() : CompletePaymentAction
-    // {
-    //     return app(CompletePaymentAction::class);
-    // }
+    public function completeNotification() : CompleteNotificationAction
+    {
+        return app(CompleteNotificationAction::class);
+    }
 
+    public function expiredNotification() : ExpiredNotificationAction
+    {
+        return app(ExpiredNotificationAction::class);
+    }
+
+    public function sendNotification() : SendNotificationAction
+    {
+        return new SendNotificationAction($this);
+    }
     // public function waitingPayment() : WaitingPaymentAction
     // {
     //     return app(WaitingPaymentAction::class);

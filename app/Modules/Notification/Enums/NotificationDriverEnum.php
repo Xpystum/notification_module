@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Modules\Notification\Enums;
+use InvalidArgumentException;
 
 enum NotificationDriverEnum: string
 {
@@ -8,24 +9,21 @@ enum NotificationDriverEnum: string
 
     case smtp = 'smtp';
 
-    // public function name(): string
-    // {
-    //     return match($this){
+    public static function objectByName(string $type) : NotificationDriverEnum
+    {
 
-    //         self::test => 'Тестовый провайдер',
-    //         self::ykassa => 'Юкасса',
+        return match ($type) {
 
-    //     };
-    // }
+            self::smtp->value => NotificationDriverEnum::smtp,
 
-    // private function is(PaymentDriverEnum $status): bool
-    // {
-    //     return $this === $status;
-    // }
+            self::aero->value => NotificationDriverEnum::aero,
 
-    // public function isTest(): bool
-    // {
-    //     return $this->is(PaymentDriverEnum::test);
-    // }
+            default => throw new InvalidArgumentException(
+
+                "Драйвер [{$type}] не поддерживается"
+
+            )
+        };
+    }
 
 }
