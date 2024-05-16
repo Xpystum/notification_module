@@ -6,5 +6,8 @@ use App\Modules\Notification\DTO\Base\BaseDto;
 
 interface NotificationDriverInterface
 {
-    public function send(BaseDto $dto);
+
+    public function send(BaseDto $dto) : void;
+    // public function getMethodDriver() : NotificationDriverInterface;
+    public function getMethodDriver();
 }

@@ -11,7 +11,12 @@ class NotificationServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        //создаём только 1 экземпляр класса
+        $this->app->singleton(NotificationService::class, function() {
 
+            return new NotificationService();
+
+        });
     }
 
     public function boot(): void

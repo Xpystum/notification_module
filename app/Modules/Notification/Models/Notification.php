@@ -19,6 +19,7 @@ class Notification extends Model
 
         'uuid',
         'method_id',
+        'user_id',
         'status',
         'code',
 

@@ -3,6 +3,7 @@
 namespace App\Modules\Notification\Repositories;
 
 use App\Modules\Notification\Enums\MethodNotificationEnum;
+use App\Modules\Notification\Enums\NotificationDriverEnum;
 use App\Modules\Notification\Models\NotificationMethod as Model;
 use App\Modules\Notification\Repositories\Base\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,5 +39,18 @@ class NotificationMethodRepository extends CoreRepository
     public function getMethodByEnum(MethodNotificationEnum $method) : ?Model
     {
         return $this->query()->where('name', '=' , $method)->first();
+    }
+
+    public function getMethodByEnumDriver(NotificationDriverEnum $methodDriver) : ?Model
+    {
+        return $this->query()->where('driver', '=' , $methodDriver)->first();
+    }
+
+    public function getMethodNameAndDriver(NotificationDriverEnum $methodDriver, MethodNotificationEnum $methodName) : ?Model
+    {
+        return $this->query()
+            ->where('driver', '=' , $methodDriver)
+            ->where('name' , '=' , $methodName)
+            ->first();
     }
 }

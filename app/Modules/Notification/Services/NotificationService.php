@@ -11,7 +11,6 @@ use App\Modules\Notification\Action\UpdateNotificationAction;
 use App\Modules\Notification\Drivers\Factory\NotificationDriverFactory;
 use App\Modules\Notification\Enums\NotificationDriverEnum;
 use App\Modules\Notification\Interface\NotificationDriverInterface;
-use App\Modules\Notification\Models\Notification;
 
 class NotificationService
 {

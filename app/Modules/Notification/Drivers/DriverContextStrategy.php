@@ -19,8 +19,8 @@ class DriverContextStrategy
         $this->strategy = $strategy;
     }
 
-    public function send(BaseDto $dto): bool
+    public function send(BaseDto $dto) : void
     {
-        return $this->strategy->send($dto);
+        $this->strategy->send($dto);
     }
 }

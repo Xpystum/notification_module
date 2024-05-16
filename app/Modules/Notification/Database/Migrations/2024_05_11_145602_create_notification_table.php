@@ -15,12 +15,12 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->timestamps();
 
+            $table->foreignId('user_id')->constrained();
+
             $table->foreignId('method_id');
             $table->foreign('method_id')->references('id')->on('notification_method');
 
-            // $table->foreignId('user_id')->constrained(
-            //     table: 'notification_method', indexName: 'method_id'
-            // );
+
 
             $table->string('status')->default(ActiveStatusEnum::pending->value);
             $table->string('code');
