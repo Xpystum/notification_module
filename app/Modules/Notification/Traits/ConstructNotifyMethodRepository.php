@@ -4,11 +4,11 @@ namespace App\Modules\Notification\Traits;
 
 use App\Modules\Notification\Repositories\NotificationMethodRepository;
 
-trait ConstructRepository
+trait ConstructNotifyMethodRepository
 {
     public function __construct(
 
-        public NotificationMethodRepository $repositoryMethod
+        public NotificationMethodRepository $repository
 
     ) { }
 }

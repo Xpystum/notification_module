@@ -26,21 +26,31 @@ class NotificationController
         //         ->method($modelMethod)
         //         ->run();
 
-        // $service->sendNotification()
-        //     ->typeDriver('smtp')
-        //     ->dto(new SmtpDto)
-        //     ->run();
-
-        // $service->updateNotification()->updateCode()->run($model);
-
         /**
         * @var User
         */
         $user = User::first();
 
-        $service->sendNotification()
+        // $service->sendNotification()
+        //     ->typeDriver('smtp')
+        //     ->dto(new SmtpDTO($user))
+        //     ->run();
+
+        // $service->updateNotification()->updateCode()->run($model);
+
+
+        // dd($user->lastNotify->method);
+
+        // $service->sendNotification()
+        //     ->typeDriver('smtp')
+        //     ->dto(new SmtpDTO($user))->run();
+
+        // dd($service->checkNotification()->user($user)->code(339470)->run());
+
+        dd($service->sendNotification()
             ->typeDriver('smtp')
-            ->dto(new SmtpDTO($user))->run();
+            ->dto(new SmtpDTO($user))
+            ->run());
 
     }
 }

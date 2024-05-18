@@ -4,13 +4,13 @@ namespace App\Modules\Notification\Action;
 
 use App\Modules\Notification\Enums\MethodNotificationEnum;
 use App\Modules\Notification\Enums\NotificationDriverEnum;
-use App\Modules\Notification\Traits\ConstructRepository;
+use App\Modules\Notification\Traits\ConstructNotifyMethodRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class GetMethodAction
 {
-    use ConstructRepository;
+    use ConstructNotifyMethodRepository;
 
     private ?MethodNotificationEnum $enumMethodName = null;
 
@@ -75,15 +75,15 @@ class GetMethodAction
 
             if($this->enumMethodName && $this->enumMethodDriver)
             {
-                return $this->repositoryMethod->getMethodNameAndDriver($this->enumMethodDriver, $this->enumMethodName);
+                return $this->repository->getMethodNameAndDriver($this->enumMethodDriver, $this->enumMethodName);
             }
             elseif ($this->enumMethodName)
             {
-                return $this->repositoryMethod->getMethodByEnum($this->enumMethodName);
+                return $this->repository->getMethodByEnum($this->enumMethodName);
             }
             elseif ($this->enumMethodDriver)
             {
-                return $this->repositoryMethod->getMethodByEnumDriver($this->enumMethodDriver);
+                return $this->repository->getMethodByEnumDriver($this->enumMethodDriver);
             }
             else {
                 return null;
@@ -99,7 +99,7 @@ class GetMethodAction
     {
         return Cache::remember('notificationMethod', 860, function ()  {
 
-            return $this->repositoryMethod->getMethodsAll();
+            return $this->repository->getMethodsAll();
 
         });
     }

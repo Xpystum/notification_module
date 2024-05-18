@@ -24,17 +24,16 @@ class SmtpDriver implements NotificationDriverInterface
 
     public function send(BaseDto $dto) : void
     {
-
         if ($dto instanceof SmtpDTO) {
-
             event(new SendNotificationEvent($dto->user, $this->getMethodDriver()) );
-
         } else {
-
             throw new \InvalidArgumentException("Invalid DTO type");
-
         }
+    }
 
+    public function check()
+    {
+        
     }
 
 

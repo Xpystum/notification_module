@@ -2,6 +2,7 @@
 
 namespace App\Modules\Notification\Services;
 
+use App\Modules\Notification\Action\CheckNotificationAction;
 use App\Modules\Notification\Action\CompleteNotificationAction;
 use App\Modules\Notification\Action\CreateNotificationAction;
 use App\Modules\Notification\Action\ExpiredNotificationAction;
@@ -14,6 +15,10 @@ use App\Modules\Notification\Interface\NotificationDriverInterface;
 
 class NotificationService
 {
+
+    public function setDriver(){
+        
+    }
 
     public function getDriver(NotificationDriverEnum $driver): NotificationDriverInterface
     {
@@ -49,10 +54,11 @@ class NotificationService
     {
         return new SendNotificationAction($this);
     }
-    // public function waitingPayment() : WaitingPaymentAction
-    // {
-    //     return app(WaitingPaymentAction::class);
-    // }
+
+    public function checkNotification() : CheckNotificationAction
+    {
+        return app(CheckNotificationAction::class);
+    }
 
     // public function cancelPayment() : CancelPaymentAction
     // {

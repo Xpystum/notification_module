@@ -35,7 +35,7 @@ class SendNotificationAction
 
     public function run()
     {
-
+        //паттерн стратегии для выбора логики драйвера
         switch($this->typeDriver){
 
             case 'smtp':

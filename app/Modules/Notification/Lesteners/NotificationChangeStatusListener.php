@@ -6,7 +6,7 @@ use App\Modules\Notification\Events\NotificationEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-class NotificationCompletedListener implements ShouldQueue
+class NotificationChangeStatusListener implements ShouldQueue
 {
     public function __construct()
     {
