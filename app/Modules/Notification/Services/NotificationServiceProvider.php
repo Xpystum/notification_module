@@ -3,6 +3,8 @@
 namespace App\Modules\Notification\Services;
 
 use App\Modules\Notification\Console\Commands\MakeNotificationMethodCommand;
+use App\Modules\Notification\Drivers\AeroDriver;
+use App\Modules\Notification\Drivers\SmtpDriver;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +17,18 @@ class NotificationServiceProvider extends ServiceProvider
         $this->app->singleton(NotificationService::class, function() {
 
             return new NotificationService();
+
+        });
+
+        $this->app->singleton(AeroDriver::class, function() {
+
+            return new AeroDriver();
+
+        });
+
+        $this->app->singleton(SmtpDriver::class, function() {
+
+            return new SmtpDriver();
 
         });
     }

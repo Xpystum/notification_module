@@ -12,12 +12,6 @@ abstract class BaseDriver
     protected NotificationDriverEnum $name;
     protected NotificationService $services;
 
-    public function __construct()
-    {
-        $this->services = app(NotificationService::class);
-        $this->name = NotificationDriverEnum::objectByName('smtp');
-    }
-
     public function getMethodDriver() : NotificationMethod
     {
         return $this->services->getNotificationMethod()

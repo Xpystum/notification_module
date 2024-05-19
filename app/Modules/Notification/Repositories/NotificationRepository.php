@@ -36,7 +36,7 @@ class NotificationRepository extends CoreRepository
     }
 
     #TODO сделать на возврат модели notification
-    // public function getNotification(int $code) : Model
+    // public function getNotificationLastTime(int $code) : Model
     // {
 
     //     return $this->query()

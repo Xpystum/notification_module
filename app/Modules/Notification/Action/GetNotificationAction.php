@@ -21,7 +21,7 @@ class GetNotificationAction
         return $this;
     }
 
-    public function notifyMethod(NotificationMethod $notifyMethod): static
+    public function GetNotifyMethod(NotificationMethod $notifyMethod): static
     {
         $this->notifyMethod = $notifyMethod;
         return $this;

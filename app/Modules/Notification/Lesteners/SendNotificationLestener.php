@@ -8,9 +8,10 @@ use App\Modules\Notification\Events\SendNotificationEvent;
 use App\Modules\Notification\Models\Notification;
 use App\Modules\Notification\Notify\SendMessageSmtpNotification;
 use App\Modules\Notification\Services\NotificationService;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+
+#TODO Скорее лучше всего сделать через jobs что бы не мешать логику отправки у драйверов
 class SendNotificationLestener //implements ShouldQueue
 {
 
@@ -33,7 +34,7 @@ class SendNotificationLestener //implements ShouldQueue
 
             case 'phone':
             {
-                ##метода для телефона
+                $this->notificationPhone($event);
                 break;
             }
 
@@ -47,18 +48,24 @@ class SendNotificationLestener //implements ShouldQueue
 
     }
 
+    //отправка email
     private function notificationEmail(SendNotificationEvent $event)
     {
-        $user = $event->user;
+
+        /**
+        * @var SmtpDTO $dto
+        */
+        $dto = $event->dto;
+        $user = $dto->user;
 
         /**
         * @var Notification
         */
         $notifyModel = $user->lastNotify;
+        #TODO сделать нотификацию (по методу)
 
         if($this->existNotificationModelAndComplteted($notifyModel))
         {
-
             Log::info("зашли в event - где заявка уже выполнена" . now());
             return;
         }
@@ -90,6 +97,25 @@ class SendNotificationLestener //implements ShouldQueue
             $notification = new SendMessageSmtpNotification($notifyModel);
             $event->user->notify($notification);
         }
+    }
+
+    //отправка phone
+    private function notificationPhone(SendNotificationEvent $event)
+    {
+        /**
+        * @var SmtpDTO $dto
+        */
+        $dto = $event->dto;
+        $user = $dto->user;
+
+        /**
+        * @var Notification
+        */
+        $notifyModel = $user->lastNotify;
+
+
+        // $smsAeroMessage = new \SmsAero\SmsAeroMessage('Ваш E-mail на сайте', 'apiKey можно посмотреть в личном кабинете в разделе настройки -> API и SMPP');
+        Log::info($event->dto);
     }
 
     //существует ли уже заявка на подвтреждение в статусе completed
