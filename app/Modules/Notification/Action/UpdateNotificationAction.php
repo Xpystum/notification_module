@@ -2,6 +2,7 @@
 
 namespace App\Modules\Notification\Action;
 
+use App\Modules\Notification\Enums\ActiveStatusEnum;
 use App\Modules\Notification\Models\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -24,12 +25,13 @@ class UpdateNotificationAction
 
     public function run(Notification $model)
     {
-        if($this->code)
+        if($this->code && $model->status != ActiveStatusEnum::completed)
         {
             $model->code = code();
+            return $model->save();
         }
 
-        return $model->save();
+        return false;
     }
 
 }

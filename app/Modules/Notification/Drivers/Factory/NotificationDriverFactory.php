@@ -17,17 +17,17 @@ class NotificationDriverFactory
      * Регистрация singletone в laravel - как вариант
      * Лучше продумать это в сервесе*
      */
-    public function make(NotificationDriverEnum $driver): NotificationDriverInterface
+    public function make(NotificationDriverEnum|string $driver): NotificationDriverInterface
     {
         return match ($driver) {
 
-            NotificationDriverEnum::aero => app(AeroDriver::class),
+            NotificationDriverEnum::aero ,  'aero' => app(AeroDriver::class),
 
-            NotificationDriverEnum::smtp => app(SmtpDriver::class),
+            NotificationDriverEnum::smtp , 'smtp' =>  app(SmtpDriver::class),
 
             default => throw new InvalidArgumentException(
 
-                "Драйвер [{$driver}] не поддерживается"
+                "Драйвер [{$driver}] не поддерживается", 404
 
             )
 

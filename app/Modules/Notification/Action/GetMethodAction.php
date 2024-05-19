@@ -27,8 +27,7 @@ class GetMethodAction
 
     public function methodName(MethodNotificationEnum $enumMethodName) : static
     {
-        $this->$enumMethodName = $enumMethodName;
-
+        $this->enumMethodName = $enumMethodName;
         return $this;
     }
 
@@ -41,7 +40,6 @@ class GetMethodAction
 
     public function first() : ?Model
     {
-
 
         if($this->flag){
 

@@ -8,6 +8,7 @@ use App\Modules\Notification\Action\CreateNotificationAction;
 use App\Modules\Notification\Action\ExpiredNotificationAction;
 use App\Modules\Notification\Action\GetMethodAction;
 use App\Modules\Notification\Action\SendNotificationAction;
+use App\Modules\Notification\Action\SetDriverNotificationAction;
 use App\Modules\Notification\Action\UpdateNotificationAction;
 use App\Modules\Notification\Drivers\Factory\NotificationDriverFactory;
 use App\Modules\Notification\Enums\NotificationDriverEnum;
@@ -16,11 +17,25 @@ use App\Modules\Notification\Interface\NotificationDriverInterface;
 class NotificationService
 {
 
-    public function setDriver(){
-        
+    private ?NotificationDriverInterface $driver;
+
+    public function driverNotNull() : bool
+    {
+        return $this->driver ? true : false;
     }
 
-    public function getDriver(NotificationDriverEnum $driver): NotificationDriverInterface
+    public function getDriver() : ?NotificationDriverInterface
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(NotificationDriverEnum|string $driver) : static
+    {
+        $this->driver = $this->getDriverFactory($driver);
+        return $this;
+    }
+
+    public function getDriverFactory(NotificationDriverEnum|string $driver): NotificationDriverInterface
     {
         return app(NotificationDriverFactory::class)->make($driver);
     }
@@ -60,10 +75,6 @@ class NotificationService
         return app(CheckNotificationAction::class);
     }
 
-    // public function cancelPayment() : CancelPaymentAction
-    // {
-    //     return app(CancelPaymentAction::class);
-    // }
 
 
 }

@@ -35,4 +35,11 @@ class NotificationRepository extends CoreRepository
         return $status ? true : false;
     }
 
+    #TODO сделать на возврат модели notification
+    // public function getNotification(int $code) : Model
+    // {
+
+    //     return $this->query()
+    // }
+
 }

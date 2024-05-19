@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 interface NotificationDriverInterface
 {
-
     public function send(BaseDto $dto) : void;
-    public function getMethodDriver() : Model;
-    // public function check() : bool;
-    public function check();
+    public function getNameString() : string;
 }
