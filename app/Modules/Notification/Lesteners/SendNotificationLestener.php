@@ -80,7 +80,7 @@ class SendNotificationLestener //implements ShouldQueue
             !($status) ? Log::info("при обновлении coda в модели Notification произошла ошибка: " . now()) : '' ;
 
             $notification = new SendMessageSmtpNotification($notifyModel);
-            $event->user->notify($notification);
+            $user->notify($notification);
 
             return;
 
@@ -90,12 +90,12 @@ class SendNotificationLestener //implements ShouldQueue
             * @var Notification
             */
             $notifyModel = $this->service->createNotification()
-            ->user($event->user)
+            ->user($user)
             ->method($event->notifyMethod)
             ->run();
 
             $notification = new SendMessageSmtpNotification($notifyModel);
-            $event->user->notify($notification);
+            $user->notify($notification);
         }
     }
 
@@ -103,15 +103,21 @@ class SendNotificationLestener //implements ShouldQueue
     private function notificationPhone(SendNotificationEvent $event)
     {
         /**
-        * @var SmtpDTO $dto
+        * @var AeroDTO $dto
         */
         $dto = $event->dto;
-        $user = $dto->user;
-
+        $user = $dto->getUser();
+        dd($user);
         /**
         * @var Notification
         */
         $notifyModel = $user->lastNotify;
+
+        if($this->existNotificationModelAndComplteted($notifyModel))
+        {
+            Log::info("зашли в event - где заявка уже выполнена" . now());
+            return;
+        }
 
 
         // $smsAeroMessage = new \SmsAero\SmsAeroMessage('Ваш E-mail на сайте', 'apiKey можно посмотреть в личном кабинете в разделе настройки -> API и SMPP');

@@ -7,10 +7,10 @@ class AeroPhoneDTO
     public function __construct(
 
         public string $number,
-        public string $sign,
         public string $text,
-        public ?string $callbackUrl,
+        public string $sign = 'SMS Aero',
+        public ?string $callbackUrl = null,
 
-    ) { }
+    ) {}
 
 }

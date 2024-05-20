@@ -3,6 +3,8 @@
 namespace App\Modules\Notification\View\Http\Controllers;
 
 use App\Models\User;
+use App\Modules\Notification\DTO\AeroDTO;
+use App\Modules\Notification\DTO\Phone\AeroPhoneDTO;
 use App\Modules\Notification\DTO\SmtpDTO;
 use App\Modules\Notification\Enums\MethodNotificationEnum;
 use App\Modules\Notification\Enums\NotificationDriverEnum;
@@ -19,7 +21,7 @@ class NotificationController
     public function __construct(NotificationService $service)
     {
         $this->service = $service;
-        $this->service->setDriver('smtp');
+        $this->service->setDriver('aero');
     }
 
     public function __invoke()
@@ -60,8 +62,13 @@ class NotificationController
         // dd($service->checkNotification()->user($user)->code(339470)->run());
 
         $this->service->sendNotification()
-            ->typeDriver('smtp')
-            ->dto(new SmtpDTO($user))
+            ->dto(new AeroDTO(
+                $user,
+                new AeroPhoneDTO(
+                    number: '79200264425',
+                    text: 'Тестовый текс на смс',
+                ),
+            ))
             ->run();
 
     }

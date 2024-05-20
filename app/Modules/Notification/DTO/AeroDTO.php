@@ -9,11 +9,18 @@ use App\Modules\Notification\DTO\Phone\AeroPhoneDTO;
 
 class AeroDTO extends BaseDTO
 {
-    public function __construct(
+    public AeroConfigDTO $config;
+    public User $user;
+    public AeroPhoneDTO $phoneData;
 
-        public AeroConfigDTO $config,
-        public User $user,
-        public AeroPhoneDTO $phoneData,
+    public function __construct(User $user, AeroPhoneDTO $phoneData)
+    {
+        $this->user = $user;
+        $this->phoneData = $phoneData;
+    }
 
-    ) { }
+    public function getUser() : User
+    {
+        return $this->user;
+    }
 }
