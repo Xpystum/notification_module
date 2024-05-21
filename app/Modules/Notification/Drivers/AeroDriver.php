@@ -21,10 +21,7 @@ class AeroDriver extends BaseDriver implements NotificationDriverInterface
         $this->services = app(NotificationService::class);
         $this->name = NotificationDriverEnum::objectByName('aero');
 
-        $this->config = new AeroConfigDTO(
-            email: env('AERO_SMS_EMAIL'),
-            apiKey: env('AERO_SMS_APIKEY'),
-        );
+
     }
 
     /**
@@ -34,7 +31,6 @@ class AeroDriver extends BaseDriver implements NotificationDriverInterface
     {
 
         if ($dto instanceof AeroDTO) {
-            $dto->config = $this->config;
             event(new SendNotificationEvent($dto, $this->getMethodDriver()) );
             dd('AeroDriver');
         }

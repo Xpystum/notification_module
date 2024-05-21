@@ -27,7 +27,7 @@ class NotificationDriverFactory
 
             default => throw new InvalidArgumentException(
 
-                "Драйвер [{$driver}] не поддерживается", 404
+                "Драйвер [{$driver}] не поддерживается", 500
 
             )
 

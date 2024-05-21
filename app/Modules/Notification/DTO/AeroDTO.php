@@ -9,7 +9,6 @@ use App\Modules\Notification\DTO\Phone\AeroPhoneDTO;
 
 class AeroDTO extends BaseDTO
 {
-    public AeroConfigDTO $config;
     public User $user;
     public AeroPhoneDTO $phoneData;
 

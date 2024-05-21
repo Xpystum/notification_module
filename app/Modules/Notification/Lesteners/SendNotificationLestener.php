@@ -3,13 +3,15 @@
 namespace App\Modules\Notification\Lesteners;
 
 use App\Models\User;
+use App\Modules\Notification\DTO\AeroDTO;
+use App\Modules\Notification\DTO\Config\AeroConfigDTO;
 use App\Modules\Notification\Enums\ActiveStatusEnum;
 use App\Modules\Notification\Events\SendNotificationEvent;
 use App\Modules\Notification\Models\Notification;
 use App\Modules\Notification\Notify\SendMessageSmtpNotification;
 use App\Modules\Notification\Services\NotificationService;
 use Illuminate\Support\Facades\Log;
-
+use InvalidArgumentException;
 
 #TODO Скорее лучше всего сделать через jobs что бы не мешать логику отправки у драйверов
 class SendNotificationLestener //implements ShouldQueue
@@ -22,6 +24,7 @@ class SendNotificationLestener //implements ShouldQueue
         $this->service = $service;
     }
 
+    #TODO нужно изменить listener и всё сделать в jobs на каждый send() в зависимости от драйвера
     public function handle(SendNotificationEvent $event): void
     {
         switch($event->notifyMethod->name->value)
@@ -99,15 +102,34 @@ class SendNotificationLestener //implements ShouldQueue
         }
     }
 
-    //отправка phone
-    private function notificationPhone(SendNotificationEvent $event)
+
+    /**
+     * Отправка phone по драйверу Aero
+     *
+     *
+     * @param SendNotificationEvent $event
+     *
+     * @return void
+     */
+    private function notificationPhone(SendNotificationEvent $event) : void
     {
+        #TODO Нужно продумать логику конфига в сервесе
+        $config = new AeroConfigDTO(
+            email: env('AERO_SMS_EMAIL'),
+            apiKey: env('AERO_SMS_APIKEY'),
+        );
+
+
+        $config->checkPropery() ?: throw new InvalidArgumentException(
+            "Данные [config AERO] не были или были неправильно заполнены для aero", 500
+        );
+
         /**
         * @var AeroDTO $dto
         */
         $dto = $event->dto;
-        $user = $dto->getUser();
-        dd($user);
+        $user = $dto->user;
+
         /**
         * @var Notification
         */
@@ -119,9 +141,42 @@ class SendNotificationLestener //implements ShouldQueue
             return;
         }
 
+        if($this->existNotificationModelAndPending($notifyModel))
+        {
+            $status = $this->service->updateNotification()
+                ->updateCode()
+                ->run($notifyModel);
 
-        // $smsAeroMessage = new \SmsAero\SmsAeroMessage('Ваш E-mail на сайте', 'apiKey можно посмотреть в личном кабинете в разделе настройки -> API и SMPP');
-        Log::info($event->dto);
+            !($status) ? Log::info("при обновлении coda в модели Notification произошла ошибка: " . now()) : '' ;
+
+
+        } else {
+
+            /**
+            * @var Notification
+            */
+            $notifyModel = $this->service->createNotification()
+            ->user($user)
+            ->method($event->notifyMethod)
+            ->run();
+
+        }
+
+        $this->driverLogicAero($config, $dto);
+
+    }
+
+    private function driverLogicAero(AeroConfigDTO $config, AeroDTO $dto)
+    {
+        $smsAeroMessage = new \SmsAero\SmsAeroMessage($config->email, $config->apiKey);
+
+        $response = $smsAeroMessage->
+        send([
+            'number' => '79200264425',
+            'text' => 'Введите код',
+            'sign' => $config->sign
+        ]);
+
     }
 
     //существует ли уже заявка на подвтреждение в статусе completed
